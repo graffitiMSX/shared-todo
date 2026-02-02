@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/providers/auth-provider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, signOut, loading } = useAuth();
@@ -54,6 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <LanguageSwitcher />
               {user && (
                 <>
                   <span className="text-base font-medium text-gray-700">

@@ -2,12 +2,14 @@
 
 import { useState, FormEvent } from 'react';
 import { useAuth } from '@/lib/providers/auth-provider';
+import { useLanguage } from '@/lib/providers/language-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 
 export function LoginForm() {
   const { signIn } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -33,15 +35,15 @@ export function LoginForm() {
         href="/"
         className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors mb-4"
       >
-        <span className="text-lg">←</span> Back to Home
+        <span className="text-lg">←</span> {t.common.backToHome}
       </Link>
 
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-gray-800">
-          Welcome back! 👋
+          {t.auth.login.title} 👋
         </h1>
         <p className="mt-2 text-base text-gray-600">
-          Sign in to your account to continue
+          {t.auth.login.subtitle}
         </p>
       </div>
 
@@ -53,9 +55,9 @@ export function LoginForm() {
         )}
 
         <Input
-          label="Email"
+          label={t.auth.login.email}
           type="email"
-          placeholder="you@example.com"
+          placeholder={t.auth.login.emailPlaceholder}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -63,9 +65,9 @@ export function LoginForm() {
         />
 
         <Input
-          label="Password"
+          label={t.auth.login.password}
           type="password"
-          placeholder="••••••••"
+          placeholder={t.auth.login.passwordPlaceholder}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -77,7 +79,7 @@ export function LoginForm() {
             href="/forgot-password"
             className="text-sm text-gray-700 hover:text-gray-900 font-medium"
           >
-            Forgot password?
+            {t.auth.login.forgotPassword}
           </Link>
         </div>
 
@@ -88,14 +90,14 @@ export function LoginForm() {
           className="w-full"
           isLoading={isLoading}
         >
-          Sign In
+          {t.auth.login.signIn}
         </Button>
       </form>
 
       <p className="text-center text-sm text-gray-600">
-        Don't have an account?{' '}
+        {t.auth.login.noAccount}{' '}
         <Link href="/register" className="font-medium text-primary-600 hover:text-primary-700">
-          Sign up
+          {t.auth.login.signUp}
         </Link>
       </p>
     </div>
