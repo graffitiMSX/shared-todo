@@ -43,10 +43,18 @@ export function useTodos() {
         .eq('todo_participants.user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      // Return empty array if error or no data
+      if (error) {
+        console.error('Error fetching todos:', error);
+        return [];
+      }
+
+      if (!data || data.length === 0) {
+        return [];
+      }
 
       // Add is_owner flag
-      const todos = data?.map((todo: any) => ({
+      const todos = data.map((todo: any) => ({
         id: todo.id,
         title: todo.title,
         description: todo.description,
@@ -59,7 +67,7 @@ export function useTodos() {
         is_owner: todo.created_by === user.id,
       })) as Todo[];
 
-      return todos || [];
+      return todos;
     },
     enabled: !!user,
   });
@@ -93,7 +101,10 @@ export function useCreateTodo() {
         .select()
         .single();
 
-      if (todoError) throw todoError;
+      if (todoError) {
+        console.error('Error creating todo:', todoError);
+        throw new Error(`Failed to create todo: ${todoError.message}`);
+      }
 
       // Add creator as owner participant
       const { error: participantError } = await supabase
@@ -104,7 +115,10 @@ export function useCreateTodo() {
           role: 'owner',
         });
 
-      if (participantError) throw participantError;
+      if (participantError) {
+        console.error('Error adding participant:', participantError);
+        throw new Error(`Failed to add participant: ${participantError.message}`);
+      }
 
       return todo;
     },

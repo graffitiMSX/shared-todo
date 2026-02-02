@@ -113,8 +113,8 @@ export function TodoList() {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'all'
-              ? 'bg-primary-600 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-400'
+              ? 'bg-gray-900 text-white shadow-md'
+              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
           }`}
         >
           All ({stats.total})
@@ -123,8 +123,8 @@ export function TodoList() {
           onClick={() => setFilter('active')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'active'
-              ? 'bg-primary-600 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-400'
+              ? 'bg-gray-900 text-white shadow-md'
+              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
           }`}
         >
           Active ({stats.active})
@@ -133,8 +133,8 @@ export function TodoList() {
           onClick={() => setFilter('completed')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'completed'
-              ? 'bg-primary-600 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-400'
+              ? 'bg-gray-900 text-white shadow-md'
+              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
           }`}
         >
           Completed ({stats.completed})
@@ -143,8 +143,8 @@ export function TodoList() {
           onClick={() => setFilter('mine')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'mine'
-              ? 'bg-primary-600 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-400'
+              ? 'bg-gray-900 text-white shadow-md'
+              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
           }`}
         >
           Mine ({stats.mine})
