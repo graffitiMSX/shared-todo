@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useToggleTodo, useDeleteTodo, type Todo } from '@/lib/hooks/useTodos';
+import { useTodoParticipants } from '@/lib/hooks/useParticipants';
 import { formatDate, formatTime } from '@/lib/utils';
 
 interface TodoCardProps {
@@ -14,6 +15,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const toggleTodo = useToggleTodo();
   const deleteTodo = useDeleteTodo();
+  const { data: participants = [] } = useTodoParticipants(todo.id);
 
   const handleToggle = () => {
     toggleTodo.mutate({ id: todo.id, completed: !todo.completed });
@@ -94,6 +96,16 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                   Overdue
                 </span>
               )}
+            </div>
+          )}
+
+          {/* Participants */}
+          {participants.length > 1 && (
+            <div className="mt-2 flex items-center gap-2 text-sm">
+              <span className="text-xl">👥</span>
+              <span className="text-gray-600">
+                Shared with {participants.length - 1} {participants.length === 2 ? 'person' : 'people'}
+              </span>
             </div>
           )}
         </div>

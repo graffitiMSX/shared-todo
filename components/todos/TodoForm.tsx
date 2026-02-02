@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCreateTodo, useUpdateTodo, type Todo } from '@/lib/hooks/useTodos';
+import { ParticipantSelector } from './ParticipantSelector';
 
 interface TodoFormProps {
   todo?: Todo;
@@ -110,6 +111,13 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
           onChange={(e) => setDueTime(e.target.value)}
         />
       </div>
+
+      {/* Sharing section - only show when editing existing todo */}
+      {todo && (
+        <div className="border-t border-gray-200 pt-4 mt-4">
+          <ParticipantSelector todoId={todo.id} isOwner={todo.is_owner || false} />
+        </div>
+      )}
 
       <div className="flex gap-3 pt-4">
         <Button type="submit" variant="primary" isLoading={isLoading} className="flex-1">
