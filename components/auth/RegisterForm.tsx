@@ -74,6 +74,13 @@ export function RegisterForm() {
 
   return (
     <div className="w-full max-w-md space-y-6 bg-white p-8 rounded-2xl shadow-xl">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors mb-4"
+      >
+        <span className="text-lg">←</span> Back to Home
+      </Link>
+
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-gray-800">
           Create your account 🚀

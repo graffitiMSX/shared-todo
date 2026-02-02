@@ -29,6 +29,13 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md space-y-6 bg-white p-8 rounded-2xl shadow-xl">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors mb-4"
+      >
+        <span className="text-lg">←</span> Back to Home
+      </Link>
+
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-gray-800">
           Welcome back! 👋
@@ -64,6 +71,15 @@ export function LoginForm() {
           required
           autoComplete="current-password"
         />
+
+        <div className="flex justify-end">
+          <Link
+            href="/forgot-password"
+            className="text-sm text-gray-700 hover:text-gray-900 font-medium"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <Button
           type="submit"
