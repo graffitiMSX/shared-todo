@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { TodoCard } from './TodoCard';
 import { TodoForm } from './TodoForm';
 import { Button } from '@/components/ui/button';
+import { PullToRefresh } from '@/components/ui/PullToRefresh';
 import { useTodos, type Todo } from '@/lib/hooks/useTodos';
 import { useAuth } from '@/lib/providers/auth-provider';
+import { useCapacitor } from '@/lib/providers/capacitor-provider';
+import { useHaptics } from '@/lib/hooks/useHaptics';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FilterType = 'all' | 'active' | 'completed' | 'mine';
 
@@ -16,6 +20,20 @@ export function TodoList() {
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const { isNative } = useCapacitor();
+  const haptics = useHaptics();
+  const queryClient = useQueryClient();
+
+  // Pull-to-refresh handler
+  const handleRefresh = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['todos'] });
+  }, [queryClient]);
+
+  // Filter button click with haptics
+  const handleFilterClick = useCallback(async (newFilter: FilterType) => {
+    await haptics.selection();
+    setFilter(newFilter);
+  }, [haptics]);
 
   if (isLoading) {
     return (
@@ -63,6 +81,7 @@ export function TodoList() {
   };
 
   const handleEdit = (todo: Todo) => {
+    haptics.light();
     setEditingTodo(todo);
     setShowForm(true);
   };
@@ -72,7 +91,13 @@ export function TodoList() {
     setEditingTodo(null);
   };
 
-  return (
+  const handleNewTodo = async () => {
+    await haptics.medium();
+    setEditingTodo(null);
+    setShowForm(true);
+  };
+
+  const listContent = (
     <div className="space-y-6">
       {/* Header with Create button */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -89,72 +114,59 @@ export function TodoList() {
         </div>
         <Button
           variant="primary"
-          onClick={() => {
-            setEditingTodo(null);
-            setShowForm(true);
-          }}
+          onClick={handleNewTodo}
+          className={isNative ? 'min-h-[48px] px-6' : ''}
         >
           + New Todo
         </Button>
       </div>
 
-      {/* Search */}
+      {/* Search - larger on mobile */}
       <input
         type="text"
         placeholder="🔍 Search todos..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+        className={`w-full rounded-lg border border-gray-300 bg-white px-4 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${
+          isNative ? 'py-4 text-lg' : 'py-3'
+        }`}
       />
 
-      {/* Filters */}
+      {/* Filters - larger touch targets on mobile */}
       <div className="flex gap-2 flex-wrap">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-4 py-2 rounded-lg font-medium transition-all ${
-            filter === 'all'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
-          }`}
-        >
-          All ({stats.total})
-        </button>
-        <button
-          onClick={() => setFilter('active')}
-          className={`px-4 py-2 rounded-lg font-medium transition-all ${
-            filter === 'active'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
-          }`}
-        >
-          Active ({stats.active})
-        </button>
-        <button
-          onClick={() => setFilter('completed')}
-          className={`px-4 py-2 rounded-lg font-medium transition-all ${
-            filter === 'completed'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
-          }`}
-        >
-          Completed ({stats.completed})
-        </button>
-        <button
-          onClick={() => setFilter('mine')}
-          className={`px-4 py-2 rounded-lg font-medium transition-all ${
-            filter === 'mine'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
-          }`}
-        >
-          Mine ({stats.mine})
-        </button>
+        {(['all', 'active', 'completed', 'mine'] as FilterType[]).map((filterType) => {
+          const labels = {
+            all: `All (${stats.total})`,
+            active: `Active (${stats.active})`,
+            completed: `Completed (${stats.completed})`,
+            mine: `Mine (${stats.mine})`,
+          };
+          return (
+            <button
+              key={filterType}
+              onClick={() => handleFilterClick(filterType)}
+              className={`rounded-lg font-medium transition-all ${
+                isNative ? 'px-5 py-3 text-base min-h-[48px]' : 'px-4 py-2'
+              } ${
+                filter === filterType
+                  ? 'bg-emerald-600 text-white shadow-md'
+                  : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50 active:bg-emerald-100'
+              }`}
+            >
+              {labels[filterType]}
+            </button>
+          );
+        })}
       </div>
 
       {/* Create/Edit Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+        <div className="fixed inset-0 bg-black/50 flex items-start justify-center p-4 z-50 overflow-y-auto">
+          <div
+            className={`bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl my-8 ${
+              isNative ? 'mt-safe-top mb-safe-bottom' : ''
+            }`}
+          >
             <h3 className="text-xl font-bold text-gray-800 mb-4">
               {editingTodo ? 'Edit Todo' : 'Create New Todo'}
             </h3>
@@ -193,6 +205,24 @@ export function TodoList() {
           </p>
         </div>
       )}
+
+      {/* Mobile hint for swipe gestures */}
+      {isNative && filteredTodos && filteredTodos.length > 0 && (
+        <p className="text-center text-sm text-gray-400 mt-4">
+          💡 Swipe cards left/right for quick actions
+        </p>
+      )}
     </div>
   );
+
+  // Wrap with pull-to-refresh on native
+  if (isNative) {
+    return (
+      <PullToRefresh onRefresh={handleRefresh} className="min-h-screen">
+        {listContent}
+      </PullToRefresh>
+    );
+  }
+
+  return listContent;
 }

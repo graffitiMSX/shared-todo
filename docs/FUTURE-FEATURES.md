@@ -112,14 +112,63 @@ This document tracks features planned for future versions of the Shared Todo app
 - Revert changes
 - Activity feed per todo
 
-#### 10. Calendar View
-**Description:** View todos on a calendar
+#### 10. Calendar View (Enhanced)
+**Description:** Full calendar view for appointments and time-based todos
 
 **Features:**
 - Month/week/day views
+- Day view with hourly time slots (agenda style)
 - Drag to change due date
+- Drag to change time period
 - Color coding by type/tag
-- Export to iCal
+- Appointment blocks showing duration
+- Export to iCal/Google Calendar
+- Sync with device calendar (Capacitor)
+
+**UI/UX:**
+- Week view as default on mobile
+- Month view as default on desktop
+- Tap day to see day agenda
+- Long-press time slot to create todo
+- Visual distinction between:
+  - Pending todos (no time)
+  - Due date todos (pinned to day)
+  - Period-based todos (time blocks)
+
+#### 11. Time Period / Duration Todos
+**Description:** Todos with time periods (from-to) instead of just due dates
+
+**Types:**
+1. **Pending Todo** - No date, just a task to complete
+2. **Due Date Todo** - Has a specific due date/time deadline
+3. **Period Todo** - Has a start time and end time (appointments, meetings)
+
+**Features:**
+- Start date/time picker
+- End date/time picker (auto-set to 1 hour after start)
+- All-day option (full day period)
+- Multi-day periods (e.g., vacation, projects)
+- Duration display (e.g., "2h 30m")
+- Overlap detection with other period todos
+- Travel time buffer option
+
+**Database Changes:**
+```sql
+ALTER TABLE todos ADD COLUMN todo_type TEXT DEFAULT 'pending';
+-- 'pending', 'due_date', 'period'
+ALTER TABLE todos ADD COLUMN start_date DATE;
+ALTER TABLE todos ADD COLUMN start_time TIME;
+ALTER TABLE todos ADD COLUMN end_date DATE;
+ALTER TABLE todos ADD COLUMN end_time TIME;
+ALTER TABLE todos ADD COLUMN is_all_day BOOLEAN DEFAULT false;
+```
+
+**UI/UX:**
+- Type selector in TodoForm: Pending | Due Date | Period
+- For Period type: Show start/end pickers
+- Calendar view shows periods as blocks
+- List view shows time range (e.g., "9:00 AM - 11:00 AM")
+- Color coded: Pending (gray), Due Date (green), Period (blue)
 
 ---
 
@@ -131,21 +180,29 @@ This document tracks features planned for future versions of the Shared Todo app
 3. Recurring Todos
 
 ### Version 1.1
-4. Subtasks
-5. Tags/Categories
-6. Attachments
+4. **Time Period / Duration Todos** ⭐ (new)
+5. Subtasks
+6. Tags/Categories
 
 ### Version 1.2
-7. Drag & Drop
-8. Rich Text
-9. Activity Log
-10. Calendar View
+7. **Calendar View (Enhanced)** ⭐ (new)
+8. Attachments
+9. Drag & Drop
+
+### Version 1.3
+10. Rich Text
+11. Activity Log
 
 ---
 
 ## 💡 User Requests
 
 **Clone/Reuse Todo** - Requested by user for grocery shopping lists and recurring tasks
+
+**Calendar View + Period Todos** - Requested by user:
+- Calendar-like view for appointments
+- Todos with periods (from-to time) vs just due dates
+- Support for: pending todos, due date todos, period-based todos
 
 ---
 
