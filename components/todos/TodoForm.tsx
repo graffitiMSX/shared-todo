@@ -468,6 +468,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
           ) : showNotificationForm || editingNotification ? (
             <NotificationForm
               todoId={todo.id}
+              todoTitle={title || todo.title}
               dueDate={dueDate}
               dueTime={dueTime || null}
               editingNotification={editingNotification}

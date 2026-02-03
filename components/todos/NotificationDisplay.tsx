@@ -1,6 +1,7 @@
 'use client';
 
 import { useTodoNotifications, useDeleteNotification, type TodoNotification } from '@/lib/hooks/useNotifications';
+import { useNotificationSync } from '@/lib/hooks/useNotificationSync';
 import { useLanguage } from '@/lib/providers/language-provider';
 
 interface NotificationDisplayProps {
@@ -12,6 +13,7 @@ export function NotificationDisplay({ todoId, onEdit }: NotificationDisplayProps
   const { t } = useLanguage();
   const { data: notifications = [], isLoading } = useTodoNotifications(todoId);
   const deleteNotification = useDeleteNotification();
+  const { cancelNativeNotification } = useNotificationSync();
 
   if (isLoading) {
     return (
@@ -53,6 +55,10 @@ export function NotificationDisplay({ todoId, onEdit }: NotificationDisplayProps
 
   const handleDelete = async (notification: TodoNotification) => {
     try {
+      // Cancel native notification first
+      await cancelNativeNotification(notification.id);
+
+      // Then delete from database
       await deleteNotification.mutateAsync({
         id: notification.id,
         todoId: notification.todo_id,

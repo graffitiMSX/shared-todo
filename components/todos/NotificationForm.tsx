@@ -9,10 +9,12 @@ import {
   type TodoNotification,
   type ReminderPreset,
 } from '@/lib/hooks/useNotifications';
+import { useNotificationSync } from '@/lib/hooks/useNotificationSync';
 import { useLanguage } from '@/lib/providers/language-provider';
 
 interface NotificationFormProps {
   todoId: string;
+  todoTitle: string;
   dueDate: string;
   dueTime: string | null;
   editingNotification?: TodoNotification | null;
@@ -22,6 +24,7 @@ interface NotificationFormProps {
 
 export function NotificationForm({
   todoId,
+  todoTitle,
   dueDate,
   dueTime,
   editingNotification,
@@ -36,6 +39,7 @@ export function NotificationForm({
 
   const addNotification = useAddNotification();
   const updateNotification = useUpdateNotification();
+  const { scheduleNativeNotification, cancelNativeNotification } = useNotificationSync();
 
   const isLoading = addNotification.isPending || updateNotification.isPending;
 
@@ -50,8 +54,13 @@ export function NotificationForm({
     try {
       const notifyAt = calculateNotifyAt(dueDate, dueTime, preset, customMinutes);
 
+      let savedNotification: TodoNotification;
+
       if (editingNotification) {
-        await updateNotification.mutateAsync({
+        // Cancel old native notification before updating
+        await cancelNativeNotification(editingNotification.id);
+
+        savedNotification = await updateNotification.mutateAsync({
           id: editingNotification.id,
           todoId,
           notify_at: notifyAt,
@@ -59,12 +68,17 @@ export function NotificationForm({
           message: message.trim() || undefined,
         });
       } else {
-        await addNotification.mutateAsync({
+        savedNotification = await addNotification.mutateAsync({
           todo_id: todoId,
           notify_at: notifyAt,
           notification_type: notificationType,
           message: message.trim() || undefined,
         });
+      }
+
+      // Schedule native notification for local/both types
+      if (notificationType !== 'push') {
+        await scheduleNativeNotification(savedNotification, todoTitle);
       }
 
       setMessage('');
