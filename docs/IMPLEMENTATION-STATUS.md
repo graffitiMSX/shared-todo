@@ -1,16 +1,16 @@
 # Shared Todo App - Implementation Status
 
-## 📊 Overall Progress: Phase 5 Complete (50%)
+## 📊 Overall Progress: Phase 6 Complete (60%)
 
 ```
-[██████████░░░░░░░░░░] 50% Complete
+[████████████░░░░░░░░] 60% Complete
 
 ✅ Phase 1: Project Setup & Backend
 ✅ Phase 2: Authentication
 ✅ Phase 3: Core Todo CRUD
 ✅ Phase 4: Participants & Sharing
 ✅ Phase 5: Rich Metadata
-⬜ Phase 6: Notification Settings
+✅ Phase 6: Notification Settings
 ⬜ Phase 7: Capacitor Setup
 ⬜ Phase 8: Native Notifications
 ⬜ Phase 9: UI Polish & Mobile UX
@@ -219,9 +219,77 @@
 - Address: No validation (free text)
 - Note: No validation (free text)
 
+## ✅ Phase 6: Notification Settings (100% Complete)
+
+**Status:** ✅ Complete
+
+### Completed Features
+
+- [x] useTodoNotifications - fetch reminders for a todo
+- [x] useAddNotification - create new reminder
+- [x] useUpdateNotification - update reminder settings
+- [x] useDeleteNotification - remove reminder
+- [x] NotificationForm component with preset options
+- [x] NotificationDisplay component with edit/delete
+- [x] Preset reminder options (15min, 1hr, 1day before)
+- [x] Custom reminder timing (minutes before due)
+- [x] Notification type selection (local, push, both)
+- [x] Optional custom message for reminders
+- [x] Integration with TodoForm (edit mode)
+- [x] Multi-language support (EN-US & PT-BR)
+- [x] Helper functions for date/time calculations
+
+**Reminder Presets:**
+- ⏰ 15 minutes before
+- ⏰ 1 hour before
+- ⏰ 1 day before
+- ⏰ Custom (1-10080 minutes)
+
+**Notification Types:**
+- ⏰ **Local**: In-app notifications
+- 📲 **Push**: Push notifications (prepared for Capacitor)
+- 🔔 **Both**: Local + Push combined
+
+**Features:**
+- Visual preset selector buttons
+- Real-time calculation of notification time
+- Human-readable time display
+- Sent status indicator
+- Edit reminders that haven't been sent yet
+- Delete any reminder
+- Requires due date to add reminders (validation)
+
+### Files Created
+
+**Hooks:**
+- `lib/hooks/useNotifications.ts` - CRUD operations for notifications
+
+**Components:**
+- `components/todos/NotificationDisplay.tsx` - Display reminders with actions
+- `components/todos/NotificationForm.tsx` - Add/edit reminder form
+
+**Updated Files:**
+- `components/todos/TodoForm.tsx` - Added notifications section
+- `lib/i18n/translations.ts` - Added notification translations
+
+**Database:**
+- Uses existing `todo_notifications` table from Phase 1
+
+### Technical Details
+
+**Notification Time Calculation:**
+```typescript
+// Calculate notify_at from due date and preset
+const notifyAt = calculateNotifyAt(dueDate, dueTime, preset, customMinutes);
+```
+
+**Helper Functions:**
+- `calculateNotifyAt()` - Converts preset to actual notification timestamp
+- `getReminderDescription()` - Human-readable time formatting
+
 ## 🎯 Current Status
 
-### ✅ Completed (Phases 1-5)
+### ✅ Completed (Phases 1-6)
 1. ✅ Full authentication system
 2. ✅ Complete todo CRUD
 3. ✅ Participant management & sharing
@@ -234,28 +302,29 @@
 10. ✅ Beautiful, friendly UI
 11. ✅ 404 page for broken links
 12. ✅ Responsive design
+13. ✅ Notification/Reminder settings
+14. ✅ Preset and custom reminder timing
 
 ### 🚀 Next Phase
-**Phase 6: Notification Settings** (estimated 2-3 hours)
-- Configure multiple reminders per todo
-- Preset reminder options (15min, 1hr, 1day before)
-- Custom reminder timing
-- Notification preferences
-- Database integration with todo_notifications table
+**Phase 7: Capacitor Setup** (estimated 3-4 hours)
+- Initialize Capacitor for iOS/Android
+- Configure native platform builds
+- Set up app icons and splash screens
+- Test native shell on simulators
 
 ## 📈 Project Statistics
 
-**Lines of Code Written:** ~4,500+
+**Lines of Code Written:** ~5,000+
 - SQL: ~400 lines (migrations)
-- TypeScript/TSX: ~3,000 lines
+- TypeScript/TSX: ~3,500 lines
 - Configuration: ~200 lines
-- Documentation: ~900 lines
+- Documentation: ~1,000 lines
 
-**Time Invested:** ~10-12 hours
+**Time Invested:** ~11-13 hours
 
-**Files Created:** 43+ files
+**Files Created:** 46+ files
 
-**Components Built:** 17+ components
+**Components Built:** 20+ components
 
 ## 🔧 Available Commands
 
@@ -272,7 +341,7 @@ npm run lint
 
 ## 🎯 Success Metrics
 
-### Phases 1-5 Goals: ✅ All Met
+### Phases 1-6 Goals: ✅ All Met
 - [x] Users can register and login
 - [x] Create, edit, delete, complete todos
 - [x] Share todos with participants
@@ -286,6 +355,10 @@ npm run lint
 - [x] Responsive design
 - [x] Overdue detection
 - [x] Error handling
+- [x] Configure multiple reminders per todo
+- [x] Preset reminder options (15min, 1hr, 1day before)
+- [x] Custom reminder timing
+- [x] Notification type preferences (local, push, both)
 
 ### Quality Indicators
 - **Type Safety:** 100% TypeScript
@@ -320,12 +393,13 @@ None! All phases complete and working. 🎉
 **Phase 3:** ✅ Complete (2.5 hours)
 **Phase 4:** ✅ Complete (1.5 hours)
 **Phase 5:** ✅ Complete (2 hours)
+**Phase 6:** ✅ Complete (1 hour)
 
-**Total Time:** ~10-12 hours
+**Total Time:** ~11-13 hours
 
-**Remaining Phases:** 6 phases (~20-30 hours)
+**Remaining Phases:** 4 phases (~15-20 hours)
 
 ---
 
-**Last Updated:** Phase 4 Complete
-**Status:** ✅ 40% Complete - Ready for Phase 5 (Rich Metadata)
+**Last Updated:** Phase 6 Complete
+**Status:** ✅ 60% Complete - Ready for Phase 7 (Capacitor Setup)

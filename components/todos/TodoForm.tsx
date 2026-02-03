@@ -9,11 +9,14 @@ import { MetadataDisplay } from './MetadataDisplay';
 import { MetadataForm } from './MetadataForm';
 import { ChecklistDisplay } from './ChecklistDisplay';
 import { ChecklistForm } from './ChecklistForm';
+import { NotificationDisplay } from './NotificationDisplay';
+import { NotificationForm } from './NotificationForm';
 import { useLanguage } from '@/lib/providers/language-provider';
 import { useAddChecklistItem } from '@/lib/hooks/useChecklist';
 import { useAddParticipant, useSearchUsers, type UserProfile } from '@/lib/hooks/useParticipants';
 import type { TodoMetadata } from '@/lib/hooks/useMetadata';
 import type { ChecklistItem } from '@/lib/hooks/useChecklist';
+import type { TodoNotification } from '@/lib/hooks/useNotifications';
 
 interface PendingChecklistItem {
   id: string; // temp id for key
@@ -43,6 +46,8 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
   const [editingMetadata, setEditingMetadata] = useState<TodoMetadata | null>(null);
   const [showChecklistForm, setShowChecklistForm] = useState(false);
   const [editingChecklistItem, setEditingChecklistItem] = useState<ChecklistItem | null>(null);
+  const [showNotificationForm, setShowNotificationForm] = useState(false);
+  const [editingNotification, setEditingNotification] = useState<TodoNotification | null>(null);
 
   // For creation mode - pending items to add after todo is created
   const [pendingChecklistItems, setPendingChecklistItems] = useState<PendingChecklistItem[]>([]);
@@ -426,6 +431,59 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
               todoId={todo.id}
               isOwner={todo.is_owner || false}
               onEdit={(metadata) => setEditingMetadata(metadata)}
+            />
+          )}
+        </div>
+      )}
+
+      {/* Notifications/Reminders section - only show when editing existing todo */}
+      {todo && (
+        <div className="border-t border-gray-200 pt-4 mt-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-emerald-700 flex items-center gap-2">
+              <span>🔔</span>
+              {t.todos.notifications.title}
+            </h3>
+            {!showNotificationForm && !editingNotification && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (!dueDate) {
+                    alert(t.todos.notifications.requiresDueDate);
+                    return;
+                  }
+                  setShowNotificationForm(true);
+                }}
+                className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
+              >
+                {t.todos.notifications.addNew}
+              </button>
+            )}
+          </div>
+
+          {!dueDate ? (
+            <p className="text-sm text-gray-500 text-center py-2">
+              {t.todos.notifications.requiresDueDate}
+            </p>
+          ) : showNotificationForm || editingNotification ? (
+            <NotificationForm
+              todoId={todo.id}
+              dueDate={dueDate}
+              dueTime={dueTime || null}
+              editingNotification={editingNotification}
+              onSuccess={() => {
+                setShowNotificationForm(false);
+                setEditingNotification(null);
+              }}
+              onCancel={() => {
+                setShowNotificationForm(false);
+                setEditingNotification(null);
+              }}
+            />
+          ) : (
+            <NotificationDisplay
+              todoId={todo.id}
+              onEdit={(notification) => setEditingNotification(notification)}
             />
           )}
         </div>

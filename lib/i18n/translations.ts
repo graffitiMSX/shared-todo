@@ -211,6 +211,28 @@ export const translations = {
         deleteError: 'Failed to delete',
         saveError: 'Failed to save',
       },
+
+      // Notifications
+      notifications: {
+        title: 'Reminders',
+        addNew: '+ Add Reminder',
+        empty: 'No reminders set',
+        add: 'Add Reminder',
+        update: 'Update Reminder',
+        remindMe: 'Remind me',
+        type: 'Notification type',
+        messageLabel: 'Custom message',
+        messagePlaceholder: 'e.g., Don\'t forget!',
+        optional: 'optional',
+        minutesBefore: 'Minutes before due',
+        requiresDueDate: 'Set a due date to add reminders',
+        presets: {
+          '15min': '15 min before',
+          '1hour': '1 hour before',
+          '1day': '1 day before',
+          custom: 'Custom',
+        },
+      },
     },
 
     // 404 Page
@@ -431,6 +453,28 @@ export const translations = {
         confirmDelete: 'Excluir este item?',
         deleteError: 'Falha ao excluir',
         saveError: 'Falha ao salvar',
+      },
+
+      // Notifications
+      notifications: {
+        title: 'Lembretes',
+        addNew: '+ Adicionar Lembrete',
+        empty: 'Nenhum lembrete definido',
+        add: 'Adicionar Lembrete',
+        update: 'Atualizar Lembrete',
+        remindMe: 'Me lembre',
+        type: 'Tipo de notificação',
+        messageLabel: 'Mensagem personalizada',
+        messagePlaceholder: 'ex: Não esqueça!',
+        optional: 'opcional',
+        minutesBefore: 'Minutos antes do vencimento',
+        requiresDueDate: 'Defina uma data de vencimento para adicionar lembretes',
+        presets: {
+          '15min': '15 min antes',
+          '1hour': '1 hora antes',
+          '1day': '1 dia antes',
+          custom: 'Personalizado',
+        },
       },
     },
 
