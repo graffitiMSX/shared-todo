@@ -1,17 +1,17 @@
 import type { NextConfig } from "next";
 
+const isMobileBuild = process.env.MOBILE_BUILD === 'true';
+
 const nextConfig: NextConfig = {
-  // Enable static export for Capacitor
-  // output: 'export', // Uncomment when building for mobile
+  // Enable static export for Capacitor mobile builds
+  ...(isMobileBuild && { output: 'export' }),
 
   images: {
     unoptimized: true, // Required for static export
   },
 
-  // Disable server-side features when building for mobile
-  // typescript: {
-  //   ignoreBuildErrors: false,
-  // },
+  // Trailing slash ensures proper routing in static export
+  ...(isMobileBuild && { trailingSlash: true }),
 };
 
 export default nextConfig;
