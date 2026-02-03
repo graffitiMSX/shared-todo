@@ -24,12 +24,12 @@
 
 ### Completed Features
 
-- [x] Next.js 14 project with App Router & TypeScript
+- [x] Next.js 16 project with App Router & TypeScript
 - [x] TailwindCSS with custom theme (green/orange/blue palette)
 - [x] Supabase integration (browser & server clients)
 - [x] Database schema (5 tables: profiles, todos, todo_participants, todo_metadata, todo_notifications)
 - [x] Row Level Security policies on all tables
-- [x] Authentication middleware
+- [x] Authentication proxy (Next.js 16 proxy.ts)
 - [x] Landing page with gradient design
 - [x] Comprehensive documentation
 
