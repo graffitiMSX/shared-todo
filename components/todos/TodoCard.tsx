@@ -47,8 +47,8 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
           onClick={handleToggle}
           className={`mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 transition-all ${
             todo.completed
-              ? 'bg-primary-600 border-primary-600'
-              : 'border-gray-300 hover:border-primary-500'
+              ? 'bg-emerald-600 border-emerald-600'
+              : 'border-emerald-300 hover:border-emerald-500'
           }`}
           disabled={toggleTodo.isPending}
         >
@@ -118,7 +118,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => onEdit?.(todo)}
-                className="text-gray-600 hover:text-gray-800"
+                className="text-emerald-600 hover:text-emerald-700"
               >
                 Edit
               </Button>
@@ -156,7 +156,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
               variant="ghost"
               size="sm"
               onClick={() => setShowConfirmDelete(true)}
-              className="text-gray-500 hover:text-red-600"
+              className="text-emerald-600 hover:text-red-600"
             >
               🗑️ Delete
             </Button>

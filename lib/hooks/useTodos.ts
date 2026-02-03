@@ -87,7 +87,7 @@ export function useCreateTodo() {
     }) => {
       if (!user) throw new Error('Not authenticated');
 
-      // Create todo
+      // Create todo (trigger will automatically add creator as participant)
       // @ts-ignore
       const { data: todo, error: todoError } = await supabase
         .from('todos')
@@ -106,21 +106,8 @@ export function useCreateTodo() {
         throw new Error(`Failed to create todo: ${todoError.message}`);
       }
 
-      // Add creator as owner participant
-      const { error: participantError } = await supabase
-        .from('todo_participants')
-        .insert({
-          todo_id: todo.id,
-          user_id: user.id,
-          role: 'owner',
-        });
-
-      if (participantError) {
-        console.error('Error adding participant:', participantError);
-        throw new Error(`Failed to add participant: ${participantError.message}`);
-      }
-
-      return todo;
+      // Note: Creator is automatically added as owner participant via database trigger
+      return todo as Todo;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });

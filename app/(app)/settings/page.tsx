@@ -67,7 +67,7 @@ export default function SettingsPage() {
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-3xl font-bold tracking-tight text-emerald-700">
           Settings
         </h1>
         <p className="mt-2 text-gray-600">
@@ -76,7 +76,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="rounded-lg bg-white p-6 shadow">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-emerald-700 mb-4">
           Profile Information
         </h2>
 

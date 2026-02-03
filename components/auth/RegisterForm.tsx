@@ -64,7 +64,7 @@ export function RegisterForm() {
         </div>
         <p className="text-center text-base text-gray-700">
           Already confirmed?{' '}
-          <Link href="/login" className="font-semibold text-primary-600 hover:text-primary-700">
+          <Link href="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
             Sign in
           </Link>
         </p>
@@ -150,7 +150,7 @@ export function RegisterForm() {
 
       <p className="text-center text-sm text-gray-600">
         Already have an account?{' '}
-        <Link href="/login" className="font-medium text-primary-600 hover:text-primary-700">
+        <Link href="/login" className="font-medium text-emerald-600 hover:text-emerald-700">
           Sign in
         </Link>
       </p>

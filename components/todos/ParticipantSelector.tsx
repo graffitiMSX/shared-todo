@@ -73,7 +73,7 @@ export function ParticipantSelector({ todoId, isOwner }: ParticipantSelectorProp
             placeholder="Search by name or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             autoFocus
           />
 
@@ -86,8 +86,8 @@ export function ParticipantSelector({ todoId, isOwner }: ParticipantSelectorProp
                   disabled={addParticipant.isPending}
                   className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors text-left"
                 >
-                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
-                    <span className="text-sm font-semibold text-primary-700">
+                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-emerald-700">
                       {user.display_name?.[0]?.toUpperCase() || '?'}
                     </span>
                   </div>
@@ -118,8 +118,8 @@ export function ParticipantSelector({ todoId, isOwner }: ParticipantSelectorProp
               key={participant.id}
               className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
             >
-              <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
-                <span className="text-sm font-semibold text-primary-700">
+              <div className="flex-shrink-0 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                <span className="text-sm font-semibold text-emerald-700">
                   {displayName[0]?.toUpperCase() || '?'}
                 </span>
               </div>

@@ -21,7 +21,7 @@ export function TodoList() {
     return (
       <div className="flex justify-center py-12">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600"></div>
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
           <p className="mt-4 text-gray-600">Loading todos...</p>
         </div>
       </div>
@@ -94,7 +94,7 @@ export function TodoList() {
             setShowForm(true);
           }}
         >
-          ➕ New Todo
+          + New Todo
         </Button>
       </div>
 
@@ -104,7 +104,7 @@ export function TodoList() {
         placeholder="🔍 Search todos..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
       />
 
       {/* Filters */}
@@ -113,8 +113,8 @@ export function TodoList() {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'all'
-              ? 'bg-gray-900 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
           }`}
         >
           All ({stats.total})
@@ -123,8 +123,8 @@ export function TodoList() {
           onClick={() => setFilter('active')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'active'
-              ? 'bg-gray-900 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
           }`}
         >
           Active ({stats.active})
@@ -133,8 +133,8 @@ export function TodoList() {
           onClick={() => setFilter('completed')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'completed'
-              ? 'bg-gray-900 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
           }`}
         >
           Completed ({stats.completed})
@@ -143,8 +143,8 @@ export function TodoList() {
           onClick={() => setFilter('mine')}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             filter === 'mine'
-              ? 'bg-gray-900 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400 hover:bg-emerald-50'
           }`}
         >
           Mine ({stats.mine})

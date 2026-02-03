@@ -31,13 +31,13 @@ export default function Home() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <Link
             href="/login"
-            className="rounded-xl bg-white px-8 py-4 text-gray-900 font-bold shadow-lg border border-gray-900 hover:bg-gray-50 hover:shadow-xl transition-all transform hover:scale-105"
+            className="rounded-xl bg-emerald-600 px-8 py-4 text-white font-bold shadow-lg hover:bg-emerald-700 hover:shadow-xl transition-all transform hover:scale-105"
           >
             {t.landing.signIn}
           </Link>
           <Link
             href="/register"
-            className="rounded-xl bg-white px-8 py-4 text-gray-900 font-bold shadow-lg border border-gray-900 hover:bg-gray-50 hover:shadow-xl transition-all transform hover:scale-105"
+            className="rounded-xl bg-white px-8 py-4 text-emerald-700 font-bold shadow-lg border-2 border-emerald-600 hover:bg-emerald-50 hover:shadow-xl transition-all transform hover:scale-105"
           >
             {t.landing.getStarted}
           </Link>

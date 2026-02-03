@@ -12,16 +12,16 @@ export function LanguageSwitcher() {
   ];
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       {languages.map((lang) => (
         <button
           key={lang.code}
           onClick={() => setLanguage(lang.code)}
           title={lang.label}
-          className={`flex items-center justify-center w-10 h-10 rounded-lg text-2xl transition-all ${
+          className={`text-2xl p-1 transition-all ${
             language === lang.code
-              ? 'bg-primary-600 shadow-md ring-2 ring-primary-300'
-              : 'bg-white border border-gray-300 hover:border-primary-400 hover:shadow-sm'
+              ? 'opacity-100 scale-110'
+              : 'opacity-60 hover:opacity-100 hover:scale-105'
           }`}
         >
           {lang.flag}

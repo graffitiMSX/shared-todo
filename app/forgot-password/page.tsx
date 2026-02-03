@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
         <div className="pt-4">
           <Link
             href="/login"
-            className="block w-full text-center rounded-xl bg-gray-900 px-6 py-3 text-white font-bold shadow-lg hover:bg-gray-800 transition-colors"
+            className="block w-full text-center rounded-xl bg-emerald-600 px-6 py-3 text-white font-bold shadow-lg hover:bg-emerald-700 transition-colors"
           >
             Return to Sign In
           </Link>

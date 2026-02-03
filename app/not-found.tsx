@@ -20,14 +20,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-6 py-3 text-white font-bold shadow-lg hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-white font-bold shadow-lg hover:bg-emerald-700 transition-colors"
           >
             <span className="text-lg">←</span> Back to Home
           </Link>
 
           <Link
             href="/todos"
-            className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-gray-900 font-bold shadow-lg border border-gray-900 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-emerald-700 font-bold shadow-lg border-2 border-emerald-600 hover:bg-emerald-50 transition-colors"
           >
             Go to Todos
           </Link>

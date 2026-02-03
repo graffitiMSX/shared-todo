@@ -127,17 +127,44 @@ CREATE POLICY "Users can update own profile"
   USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
 
+-- Helper functions to avoid RLS recursion (SECURITY DEFINER bypasses RLS)
+CREATE OR REPLACE FUNCTION is_todo_participant(p_todo_id UUID, p_user_id UUID)
+RETURNS BOOLEAN
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM todo_participants
+    WHERE todo_id = p_todo_id
+    AND user_id = p_user_id
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION is_todo_owner(p_todo_id UUID, p_user_id UUID)
+RETURNS BOOLEAN
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM todo_participants
+    WHERE todo_id = p_todo_id
+    AND user_id = p_user_id
+    AND role = 'owner'
+  );
+END;
+$$ LANGUAGE plpgsql;
+
 -- Todos policies
--- Users can view todos they participate in
+-- Users can view todos they participate in (or created - needed for RETURNING)
 CREATE POLICY "Users can view their todos"
   ON todos FOR SELECT
   TO authenticated
   USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todos.id
-      AND todo_participants.user_id = auth.uid()
-    )
+    created_by = auth.uid()  -- Creator can always see (needed for INSERT RETURNING)
+    OR is_todo_participant(id, auth.uid())  -- Participants can see
   );
 
 -- Authenticated users can create todos
@@ -150,131 +177,73 @@ CREATE POLICY "Authenticated users can create todos"
 CREATE POLICY "Owners can update todos"
   ON todos FOR UPDATE
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todos.id
-      AND todo_participants.user_id = auth.uid()
-      AND todo_participants.role = 'owner'
-    )
-  )
-  WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todos.id
-      AND todo_participants.user_id = auth.uid()
-      AND todo_participants.role = 'owner'
-    )
-  );
+  USING (is_todo_owner(id, auth.uid()))
+  WITH CHECK (is_todo_owner(id, auth.uid()));
 
 -- Owners can delete their todos
 CREATE POLICY "Owners can delete todos"
   ON todos FOR DELETE
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todos.id
-      AND todo_participants.user_id = auth.uid()
-      AND todo_participants.role = 'owner'
-    )
-  );
+  USING (is_todo_owner(id, auth.uid()));
 
 -- Todo participants policies
 -- Users can view participants for todos they have access to
 CREATE POLICY "Users can view participants for their todos"
   ON todo_participants FOR SELECT
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants AS tp
-      WHERE tp.todo_id = todo_participants.todo_id
-      AND tp.user_id = auth.uid()
-    )
-  );
+  USING (is_todo_participant(todo_id, auth.uid()));
 
--- Owners can add participants
-CREATE POLICY "Owners can add participants"
+-- Split into two policies to avoid infinite recursion
+-- Policy 1: Allow todo creators to add themselves as first participant
+CREATE POLICY "Todo creators can add themselves"
   ON todo_participants FOR INSERT
   TO authenticated
   WITH CHECK (
     EXISTS (
-      SELECT 1 FROM todo_participants AS tp
-      WHERE tp.todo_id = todo_participants.todo_id
-      AND tp.user_id = auth.uid()
-      AND tp.role = 'owner'
+      SELECT 1 FROM todos
+      WHERE todos.id = todo_participants.todo_id
+      AND todos.created_by = auth.uid()
     )
+    AND user_id = auth.uid()
   );
+
+-- Policy 2: Allow existing owner participants to add others (use helper function to avoid recursion)
+CREATE POLICY "Existing owners can add participants"
+  ON todo_participants FOR INSERT
+  TO authenticated
+  WITH CHECK (is_todo_owner(todo_id, auth.uid()));
 
 -- Owners can remove participants
 CREATE POLICY "Owners can remove participants"
   ON todo_participants FOR DELETE
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants AS tp
-      WHERE tp.todo_id = todo_participants.todo_id
-      AND tp.user_id = auth.uid()
-      AND tp.role = 'owner'
-    )
-  );
+  USING (is_todo_owner(todo_id, auth.uid()));
 
 -- Todo metadata policies
 -- Users can view metadata for todos they have access to
 CREATE POLICY "Users can view metadata for their todos"
   ON todo_metadata FOR SELECT
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todo_metadata.todo_id
-      AND todo_participants.user_id = auth.uid()
-    )
-  );
+  USING (is_todo_participant(todo_id, auth.uid()));
 
 -- Participants can add metadata
 CREATE POLICY "Participants can add metadata"
   ON todo_metadata FOR INSERT
   TO authenticated
-  WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todo_metadata.todo_id
-      AND todo_participants.user_id = auth.uid()
-    )
-  );
+  WITH CHECK (is_todo_participant(todo_id, auth.uid()));
 
 -- Participants can update metadata
 CREATE POLICY "Participants can update metadata"
   ON todo_metadata FOR UPDATE
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todo_metadata.todo_id
-      AND todo_participants.user_id = auth.uid()
-    )
-  )
-  WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todo_metadata.todo_id
-      AND todo_participants.user_id = auth.uid()
-    )
-  );
+  USING (is_todo_participant(todo_id, auth.uid()))
+  WITH CHECK (is_todo_participant(todo_id, auth.uid()));
 
 -- Owners can delete metadata
 CREATE POLICY "Owners can delete metadata"
   ON todo_metadata FOR DELETE
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM todo_participants
-      WHERE todo_participants.todo_id = todo_metadata.todo_id
-      AND todo_participants.user_id = auth.uid()
-      AND todo_participants.role = 'owner'
-    )
-  );
+  USING (is_todo_owner(todo_id, auth.uid()));
 
 -- Todo notifications policies
 -- Users can view their own notifications

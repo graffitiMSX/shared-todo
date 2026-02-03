@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600"></div>
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -29,15 +29,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex h-16 justify-between">
             <div className="flex">
               <Link href="/todos" className="flex items-center">
-                <span className="text-xl font-bold text-primary-600">✨ Shared Todo</span>
+                <span className="text-xl font-bold text-emerald-600 drop-shadow-sm">✨ Shared Todo</span>
               </Link>
               <div className="ml-10 flex space-x-8">
                 <Link
                   href="/todos"
                   className={`inline-flex items-center border-b-2 px-1 pt-1 text-base font-medium ${
                     pathname === '/todos'
-                      ? 'border-primary-500 text-gray-800'
-                      : 'border-transparent text-gray-600 hover:border-primary-300 hover:text-gray-800'
+                      ? 'border-emerald-500 text-emerald-700'
+                      : 'border-transparent text-emerald-600 hover:border-emerald-300 hover:text-emerald-700'
                   }`}
                 >
                   Todos
@@ -46,8 +46,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   href="/settings"
                   className={`inline-flex items-center border-b-2 px-1 pt-1 text-base font-medium ${
                     pathname === '/settings'
-                      ? 'border-primary-500 text-gray-800'
-                      : 'border-transparent text-gray-600 hover:border-primary-300 hover:text-gray-800'
+                      ? 'border-emerald-500 text-emerald-700'
+                      : 'border-transparent text-emerald-600 hover:border-emerald-300 hover:text-emerald-700'
                   }`}
                 >
                   Settings

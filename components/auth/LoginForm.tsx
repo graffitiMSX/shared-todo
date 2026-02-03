@@ -96,7 +96,7 @@ export function LoginForm() {
 
       <p className="text-center text-sm text-gray-600">
         {t.auth.login.noAccount}{' '}
-        <Link href="/register" className="font-medium text-primary-600 hover:text-primary-700">
+        <Link href="/register" className="font-medium text-emerald-600 hover:text-emerald-700">
           {t.auth.login.signUp}
         </Link>
       </p>
