@@ -7,6 +7,7 @@ import { useToggleTodo, useDeleteTodo, type Todo } from '@/lib/hooks/useTodos';
 import { useTodoParticipants } from '@/lib/hooks/useParticipants';
 import { useHaptics } from '@/lib/hooks/useHaptics';
 import { useCapacitor } from '@/lib/providers/capacitor-provider';
+import { useLanguage } from '@/lib/providers/language-provider';
 import { formatDate, formatTime } from '@/lib/utils';
 
 interface TodoCardProps {
@@ -21,6 +22,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
   const { data: participants = [] } = useTodoParticipants(todo.id);
   const haptics = useHaptics();
   const { isNative } = useCapacitor();
+  const { t } = useLanguage();
 
   const handleToggle = async () => {
     await haptics.success();
@@ -117,7 +119,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
               </span>
               {isOverdue && (
                 <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded">
-                  Overdue
+                  {t.todos.card.overdue}
                 </span>
               )}
             </div>
@@ -128,7 +130,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
             <div className="mt-2 flex items-center gap-2 text-sm">
               <span className="text-xl">👥</span>
               <span className="text-gray-600">
-                Shared with {participants.length - 1} {participants.length === 2 ? 'person' : 'people'}
+                {t.todos.card.sharedWith} {participants.length - 1} {participants.length === 2 ? t.todos.card.person : t.todos.card.people}
               </span>
             </div>
           )}
@@ -146,7 +148,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                   isNative ? 'min-h-[44px] min-w-[44px]' : ''
                 }`}
               >
-                Edit
+                {t.todos.card.edit}
               </Button>
             )}
           </div>
@@ -158,7 +160,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
         <div className="mt-3 pt-3 border-t border-gray-200">
           {showConfirmDelete ? (
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-600">Delete this todo?</span>
+              <span className="text-sm text-gray-600">{t.todos.card.confirmDelete}</span>
               <Button
                 variant="ghost"
                 size={isNative ? 'md' : 'sm'}
@@ -168,7 +170,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                   isNative ? 'min-h-[44px]' : ''
                 }`}
               >
-                Yes, delete
+                {t.todos.card.yesDelete}
               </Button>
               <Button
                 variant="ghost"
@@ -177,7 +179,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                 disabled={deleteTodo.isPending}
                 className={isNative ? 'min-h-[44px]' : ''}
               >
-                Cancel
+                {t.common.cancel}
               </Button>
             </div>
           ) : (
@@ -192,7 +194,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                 isNative ? 'min-h-[44px]' : ''
               }`}
             >
-              🗑️ Delete
+              🗑️ {t.common.delete}
             </Button>
           )}
         </div>
@@ -208,20 +210,20 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
           !todo.completed
             ? {
                 icon: '✅',
-                label: 'Complete',
+                label: t.todos.card.complete,
                 color: '#22c55e',
                 onTrigger: handleSwipeComplete,
               }
             : {
                 icon: '↩️',
-                label: 'Undo',
+                label: t.todos.card.undo,
                 color: '#3b82f6',
                 onTrigger: handleSwipeComplete,
               }
         }
         rightAction={{
           icon: '🗑️',
-          label: 'Delete',
+          label: t.common.delete,
           color: '#ef4444',
           onTrigger: handleSwipeDelete,
         }}

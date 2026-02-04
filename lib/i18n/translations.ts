@@ -142,6 +142,10 @@ export const translations = {
         sharedWith: 'Shared with',
         person: 'person',
         people: 'people',
+        complete: 'Complete',
+        undo: 'Undo',
+        swipeHint: 'Swipe cards left/right for quick actions',
+        loadError: 'Failed to load todos. Please try again.',
       },
 
       // Empty states
@@ -385,6 +389,10 @@ export const translations = {
         sharedWith: 'Compartilhada com',
         person: 'pessoa',
         people: 'pessoas',
+        complete: 'Concluir',
+        undo: 'Desfazer',
+        swipeHint: 'Deslize os cartões para ações rápidas',
+        loadError: 'Falha ao carregar tarefas. Tente novamente.',
       },
 
       // Empty states

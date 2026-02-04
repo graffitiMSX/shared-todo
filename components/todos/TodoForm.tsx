@@ -99,7 +99,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
     setError('');
 
     if (!title.trim()) {
-      setError('Title is required');
+      setError(t.todos.form.titleRequired);
       return;
     }
 
@@ -151,7 +151,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
 
       onSuccess?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save todo');
+      setError(err instanceof Error ? err.message : t.common.error);
     }
   };
 
@@ -169,9 +169,9 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
       )}
 
       <Input
-        label="Title"
+        label={t.todos.form.title}
         type="text"
-        placeholder="What needs to be done?"
+        placeholder={t.todos.form.titlePlaceholder}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
@@ -180,10 +180,10 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Description (optional)
+          {t.todos.form.description}
         </label>
         <textarea
-          placeholder="Add more details..."
+          placeholder={t.todos.form.descriptionPlaceholder}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
@@ -193,14 +193,14 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
 
       <div className="grid grid-cols-2 gap-4">
         <Input
-          label="Due Date (optional)"
+          label={t.todos.form.dueDate}
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
         />
 
         <Input
-          label="Due Time (optional)"
+          label={t.todos.form.dueTime}
           type="time"
           value={dueTime}
           onChange={(e) => setDueTime(e.target.value)}
@@ -259,7 +259,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
                       onClick={() => handleRemovePendingChecklistItem(item.id)}
                       className="text-xs text-red-600 hover:text-red-700"
                     >
-                      Remove
+                      {t.todos.participants.remove}
                     </button>
                   </div>
                 ))}
@@ -312,7 +312,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
       <div className="border-t border-gray-200 pt-4 mt-4">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-semibold text-emerald-700">
-            👥 Share with
+            👥 {t.todos.participants.sharedWith}
           </h3>
         </div>
 
@@ -322,7 +322,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
             {/* Search input */}
             <input
               type="text"
-              placeholder="Search by name..."
+              placeholder={t.todos.participants.searchPlaceholder}
               value={participantSearch}
               onChange={(e) => setParticipantSearch(e.target.value)}
               className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
@@ -352,7 +352,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
             )}
 
             {participantSearch.length >= 2 && availableSearchResults.length === 0 && (
-              <p className="text-sm text-gray-500 text-center py-2">No users found</p>
+              <p className="text-sm text-gray-500 text-center py-2">{t.todos.participants.noUsersFound}</p>
             )}
 
             {/* Pending participants list */}
@@ -376,7 +376,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
                       onClick={() => handleRemovePendingParticipant(participant.userId)}
                       className="text-xs text-red-600 hover:text-red-700"
                     >
-                      Remove
+                      {t.todos.participants.remove}
                     </button>
                   </div>
                 ))}
@@ -385,7 +385,7 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
 
             {pendingParticipants.length === 0 && (
               <p className="text-sm text-gray-500 text-center py-2">
-                Not shared with anyone yet
+                {t.todos.participants.notShared}
               </p>
             )}
           </div>
@@ -492,11 +492,11 @@ export function TodoForm({ todo, onSuccess, onCancel }: TodoFormProps) {
 
       <div className="flex gap-3 pt-4">
         <Button type="submit" variant="primary" isLoading={isLoading} className="flex-1">
-          {todo ? 'Update Todo' : 'Create Todo'}
+          {todo ? t.todos.form.updateTodo : t.todos.form.createTodo}
         </Button>
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
-            Cancel
+            {t.common.cancel}
           </Button>
         )}
       </div>
