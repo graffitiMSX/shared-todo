@@ -3,12 +3,14 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import { useAuth } from '@/lib/providers/auth-provider';
+import { useLanguage } from '@/lib/providers/language-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createClient } from '@/lib/supabase/client';
 
 export default function SettingsPage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -53,11 +55,11 @@ export default function SettingsPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Profile updated successfully!' });
+      setMessage({ type: 'success', text: t.common.success });
     } catch (error) {
       setMessage({
         type: 'error',
-        text: error instanceof Error ? error.message : 'Failed to update profile',
+        text: error instanceof Error ? error.message : t.common.error,
       });
     } finally {
       setIsLoading(false);
@@ -68,16 +70,16 @@ export default function SettingsPage() {
     <div className="max-w-2xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-emerald-700">
-          Settings
+          {t.auth.settings.title}
         </h1>
         <p className="mt-2 text-gray-600">
-          Manage your account settings and profile
+          {t.auth.settings.profile}
         </p>
       </div>
 
       <div className="rounded-lg bg-white p-6 shadow">
         <h2 className="text-lg font-semibold text-emerald-700 mb-4">
-          Profile Information
+          {t.auth.settings.profile}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -103,24 +105,21 @@ export default function SettingsPage() {
               disabled
               className="flex h-10 w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500"
             />
-            <p className="mt-1 text-xs text-gray-500">
-              Email cannot be changed
-            </p>
           </div>
 
           <Input
-            label="Display Name"
+            label={t.auth.settings.displayName}
             type="text"
-            placeholder="Your Name"
+            placeholder={t.auth.register.displayNamePlaceholder}
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             required
           />
 
           <Input
-            label="Phone Number (optional)"
+            label={t.auth.settings.phoneNumber}
             type="tel"
-            placeholder="+1 (555) 123-4567"
+            placeholder={t.auth.settings.phoneNumberPlaceholder}
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
@@ -131,7 +130,7 @@ export default function SettingsPage() {
               variant="primary"
               isLoading={isLoading}
             >
-              Save Changes
+              {t.auth.settings.updateProfile}
             </Button>
           </div>
         </form>

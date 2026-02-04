@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/lib/providers/auth-provider';
+import { useLanguage } from '@/lib/providers/language-provider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, signOut, loading } = useAuth();
+  const { t } = useLanguage();
   const pathname = usePathname();
 
   if (loading) {
@@ -15,7 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t.common.loading}</p>
         </div>
       </div>
     );
@@ -40,7 +42,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       : 'border-transparent text-emerald-600 hover:border-emerald-300 hover:text-emerald-700'
                   }`}
                 >
-                  Todos
+                  {t.todos.title}
                 </Link>
                 <Link
                   href="/settings"
@@ -50,7 +52,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       : 'border-transparent text-emerald-600 hover:border-emerald-300 hover:text-emerald-700'
                   }`}
                 >
-                  Settings
+                  {t.auth.settings.title}
                 </Link>
               </div>
             </div>
@@ -62,7 +64,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     {user.user_metadata?.display_name || user.email}
                   </span>
                   <Button variant="ghost" size="sm" onClick={() => signOut()}>
-                    Sign Out
+                    {t.auth.settings.signOut}
                   </Button>
                 </>
               )}
