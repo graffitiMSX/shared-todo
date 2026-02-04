@@ -8,9 +8,9 @@ export default function NotFound() {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-orange-50 flex items-center justify-center px-4">
-      {/* Language Switcher */}
-      <div className="absolute top-4 right-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-orange-50 flex items-center justify-center px-4 pt-safe-top">
+      {/* Language Switcher - with safe area offset */}
+      <div className="absolute right-4" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 16px)' }}>
         <LanguageSwitcher />
       </div>
 

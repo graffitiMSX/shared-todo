@@ -8,9 +8,9 @@ export default function Home() {
   const { t } = useLanguage();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-50 via-blue-50 to-orange-50">
-      {/* Language Switcher */}
-      <div className="absolute top-4 right-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-50 via-blue-50 to-orange-50 pt-safe-top">
+      {/* Language Switcher - with safe area offset */}
+      <div className="absolute right-4" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 16px)' }}>
         <LanguageSwitcher />
       </div>
 

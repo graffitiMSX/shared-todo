@@ -167,20 +167,40 @@ export function TodoList() {
 
       {/* Create/Edit Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-start justify-center p-4 z-50 overflow-y-auto">
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex flex-col"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) handleCloseForm();
+          }}
+        >
+          {/* Scrollable container that takes remaining space above keyboard */}
           <div
-            className={`bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl my-8 ${
-              isNative ? 'mt-safe-top mb-safe-bottom' : ''
+            className={`flex-1 overflow-y-auto overscroll-contain ${
+              isNative ? 'pt-safe-top' : 'pt-4'
             }`}
           >
-            <h3 className="text-xl font-bold text-gray-800 mb-4">
-              {editingTodo ? t.todos.form.editTitle : t.todos.form.createTitle}
-            </h3>
-            <TodoForm
-              todo={editingTodo || undefined}
-              onSuccess={handleCloseForm}
-              onCancel={handleCloseForm}
-            />
+            <div className="min-h-full flex items-start justify-center p-4 pb-8">
+              <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+                {/* Header with close button */}
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold text-gray-800">
+                    {editingTodo ? t.todos.form.editTitle : t.todos.form.createTitle}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={handleCloseForm}
+                    className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <TodoForm
+                  todo={editingTodo || undefined}
+                  onSuccess={handleCloseForm}
+                  onCancel={handleCloseForm}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

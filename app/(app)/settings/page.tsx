@@ -67,7 +67,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl pt-safe-top">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-emerald-700">
           {t.auth.settings.title}

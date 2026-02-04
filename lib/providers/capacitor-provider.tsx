@@ -2,6 +2,7 @@
 
 import { useEffect, createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 import {
   isNativePlatform,
   getPlatform,
@@ -64,6 +65,17 @@ export function CapacitorProvider({ children }: CapacitorProviderProps) {
 
       // Initialize native UI if on mobile
       await initializeNativeUI();
+
+      // Configure keyboard behavior on native
+      if (native) {
+        try {
+          await Keyboard.setResizeMode({ mode: KeyboardResize.Body });
+          await Keyboard.setScroll({ isDisabled: false });
+        } catch (e) {
+          // Keyboard plugin may not be available on all platforms
+          console.log('Keyboard configuration skipped:', e);
+        }
+      }
 
       // Initialize notifications if supported
       const notifSupported = isNotificationsSupported();
